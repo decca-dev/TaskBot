@@ -21,11 +21,13 @@ export const event: Event = {
 
         const command = client.commands.get(cmd) || client.aliases.get(cmd);
 
-        if (client.cooldowns.has(`${message.author.id}${command.name}`)) {
+        const { cooldowns } = client;
 
-            const cooldownTime: string = pretty(client.cooldowns.get(`${message.author.id}${command.name}`) - Date.now())
+        if (cooldowns.has(`${message.author.id}${command.name}`)) {
 
-            const timeLeft: number = client.cooldowns.get(`${message.author.id}${command.name}`) - Date.now()
+            const cooldownTime: string = pretty(cooldowns.get(`${message.author.id}${command.name}`) - Date.now())
+
+            const timeLeft: number = cooldowns.get(`${message.author.id}${command.name}`) - Date.now()
 
             return message.channel.send({
                 embed: {
@@ -47,11 +49,11 @@ export const event: Event = {
 
             const leCooldown: number = command.cooldown * 1000
 
-            client.cooldowns.set(`${message.author.id}${command.name}`, Date.now() + leCooldown);
+            cooldowns.set(`${message.author.id}${command.name}`, Date.now() + leCooldown);
 
             setTimeout(() => {
 
-                client.cooldowns.delete(`${message.author.id}${command.name}`);
+                cooldowns.delete(`${message.author.id}${command.name}`);
 
             }, leCooldown);
 

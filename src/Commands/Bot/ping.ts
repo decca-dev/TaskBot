@@ -7,9 +7,21 @@ export const command: Command = {
     aliases: ['pong'],
     usage: "ping",
     category: "Bot",
-    cooldown: 9,
+    cooldown: 5,
     devOnly: false,
     run: async (client, message, args) => {
-        message.channel.send(`API Ping: ${client.ws.ping} ms`)
+        
+        const msg = await message.channel.send('Ping?');
+
+        msg.edit({
+            embed: {
+                color: "BLUE",
+                title: "Pong!",
+                description: `That took ${msg.createdTimestamp - message.createdTimestamp} ms`
+            }
+        })
+
+        msg.edit("\u200b");
+
     }
 }

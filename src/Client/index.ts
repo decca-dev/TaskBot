@@ -16,12 +16,13 @@ class ExtendedClient extends Client {
 
         // Login and mongo connection
 
+        connect(this.config.mongo_url, {
+            useUnifiedTopology: true,
+            useNewUrlParser: true,
+            useFindAndModify: true
+        }).then(() => console.log('Connected to MongoDB'))
+
         this.login(this.config.token);
-        // connect(this.config.mongo_url, {
-        //     useUnifiedTopology: true,
-        //     useNewUrlParser: true,
-        //     useFindAndModify: true
-        // })
 
         // Registering commands
 
@@ -31,7 +32,7 @@ class ExtendedClient extends Client {
 
             for (const file of commands) {
                 const { command } = require(`${commandPath}/${dir}/${file}`);
-                this.commands.set(command.name, command);
+                this.commands.set(command.name, { cooldown: 3, ...command});
 
                 if (command.aliases) {
                     if (command.aliases.length) {
@@ -40,6 +41,8 @@ class ExtendedClient extends Client {
                         })
                     }
                 }
+
+                console.log(`[Commands] Registering ${file}`)
     
             }
         })
@@ -51,6 +54,8 @@ class ExtendedClient extends Client {
             const { event } =  await import(`${eventPath}/${file}`);
             this.events.set(event.name, event);
             this.on(event.name, event.run.bind(null, this))
+
+            console.log(`[Events] Registering ${file}`)
         })
     }
 }
