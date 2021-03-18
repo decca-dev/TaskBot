@@ -10,6 +10,7 @@ class ExtendedClient extends Client {
     public events: Collection<string, Event> = new Collection();
     public config: Config = ConfigJson;
     public aliases: Collection<string, Command> = new Collection();
+    public cooldowns: Collection<string, number> = new Collection();
 
     public async init() {
 

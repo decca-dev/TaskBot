@@ -13,7 +13,7 @@ export interface Command {
     botPerms?: string[];
     memberPerms?: string[];
     category: string;
-    cooldown?: string;
+    cooldown: number;
     devOnly: boolean;
     run: Run;
 }

@@ -7,6 +7,7 @@ export const command: Command = {
     aliases: ['pong'],
     usage: "ping",
     category: "Bot",
+    cooldown: 9,
     devOnly: false,
     run: async (client, message, args) => {
         message.channel.send(`API Ping: ${client.ws.ping} ms`)
